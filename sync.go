@@ -6,6 +6,7 @@ import (
 	"slices"
 
 	"github.com/docker/docker/api/types"
+    "github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/filters"
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
@@ -18,7 +19,7 @@ func (r *RuleManager) syncContainers(ctx context.Context) error {
 		Key:   "label",
 		Value: enabledLabel,
 	})
-	containers, err := r.dockerCli.ContainerList(ctx, types.ContainerListOptions{Filters: filter})
+	containers, err := r.dockerCli.ContainerList(ctx, container.ListOptions{Filters: filter})
 	if err != nil {
 		return fmt.Errorf("error listing containers: %w", err)
 	}

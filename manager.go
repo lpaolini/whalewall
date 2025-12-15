@@ -282,7 +282,7 @@ func addFilters(ctx context.Context, client dockerClient) (<-chan events.Message
 			Value: "die",
 		},
 	)
-	return client.Events(ctx, types.EventsOptions{Filters: filter})
+	return client.Events(ctx, events.ListOptions{Filters: filter})
 }
 
 func (r *RuleManager) Done() <-chan struct{} {

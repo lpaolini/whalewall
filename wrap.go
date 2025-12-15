@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/container"
 )
 
 // wrappedDockerClient is a Docker client that respects the set timeout.
@@ -19,7 +20,7 @@ func (w *wrappedDockerClient) Ping(ctx context.Context) (types.Ping, error) {
 	})
 }
 
-func (w *wrappedDockerClient) ContainerList(ctx context.Context, options types.ContainerListOptions) ([]types.Container, error) {
+func (w *wrappedDockerClient) ContainerList(ctx context.Context, options container.ListOptions) ([]types.Container, error) {
 	return withTimeout(ctx, w.timeout, func(ctx context.Context) ([]types.Container, error) {
 		return w.dockerClient.ContainerList(ctx, options)
 	})

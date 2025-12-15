@@ -15,6 +15,7 @@ import (
 	"syscall"
 
 	"github.com/docker/docker/api/types"
+    "github.com/docker/docker/api/types/container"
 	"github.com/google/nftables"
 	"github.com/google/nftables/expr"
 	"go.uber.org/zap"
@@ -358,7 +359,7 @@ func (r *RuleManager) populateOutputRules(ctx context.Context, tx database.TX, c
 	if i == -1 {
 		return nil
 	}
-	listedConts, err := r.dockerCli.ContainerList(ctx, types.ContainerListOptions{})
+	listedConts, err := r.dockerCli.ContainerList(ctx, container.ListOptions{})
 	if err != nil {
 		return fmt.Errorf("error listing running containers: %w", err)
 	}

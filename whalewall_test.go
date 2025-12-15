@@ -16,7 +16,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/docker/docker/api/types"
+    "github.com/docker/docker/api/types/events"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/network"
 	"github.com/docker/docker/client"
@@ -84,7 +84,7 @@ func TestIntegration(t *testing.T) {
 	t.Cleanup(func() {
 		dockerClient.Close()
 	})
-	containers, err := dockerClient.ContainerList(context.Background(), types.ContainerListOptions{})
+	containers, err := dockerClient.ContainerList(context.Background(), container.ListOptions{})
 	is.NoErr(err)
 
 	clientChain := getContainerChain("client", containers)

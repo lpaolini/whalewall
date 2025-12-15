@@ -7,13 +7,14 @@ import (
 	"sync"
 
 	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/events"
+    "github.com/docker/docker/api/types/events"
+	"github.com/docker/docker/api/types/container"
 )
 
 type dockerClient interface {
 	Ping(ctx context.Context) (types.Ping, error)
-	Events(ctx context.Context, options types.EventsOptions) (<-chan events.Message, <-chan error)
-	ContainerList(ctx context.Context, options types.ContainerListOptions) ([]types.Container, error)
+	Events(ctx context.Context, options events.ListOptions) (<-chan events.Message, <-chan error)
+	ContainerList(ctx context.Context, options container.ListOptions) ([]types.Container, error)
 	ContainerInspect(ctx context.Context, containerID string) (types.ContainerJSON, error)
 	Close() error
 }
@@ -36,11 +37,11 @@ func (m *mockDockerClient) Ping(_ context.Context) (types.Ping, error) {
 	return types.Ping{}, nil
 }
 
-func (m *mockDockerClient) Events(_ context.Context, _ types.EventsOptions) (<-chan events.Message, <-chan error) {
+func (m *mockDockerClient) Events(_ context.Context, _ events.ListOptions) (<-chan events.Message, <-chan error) {
 	return m.eventCh, nil
 }
 
-func (m *mockDockerClient) ContainerList(_ context.Context, _ types.ContainerListOptions) ([]types.Container, error) {
+func (m *mockDockerClient) ContainerList(_ context.Context, _ container.ListOptions) ([]types.Container, error) {
 	m.mtx.RLock()
 	defer m.mtx.RUnlock()
 
